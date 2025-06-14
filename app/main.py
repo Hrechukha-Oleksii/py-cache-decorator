@@ -4,11 +4,10 @@ from typing import Callable, Any
 def cache(func: Callable) -> Callable:
     cache_dict = {}
 
-    def longtime_function(*args: Any, **kwargs: Any) -> Any:
-        immutable_types = (int, float, str, bool, tuple)
+    def longtime_function(*args: Any) -> Any:
 
         for arg in args:
-            if isinstance(arg, immutable_types):
+            if isinstance(arg, (int, float, str, bool, tuple)):
                 continue
             else:
                 print("This is mutable!")
@@ -16,8 +15,8 @@ def cache(func: Callable) -> Callable:
 
         if args not in cache_dict.keys():
             print("Calculating new result")
-            result_function = func(*args, **kwargs)
-            cache_dict[args] = result_function
+            result_function = func(*args)
+            cache_dict[*args] = result_function
             return result_function
         else:
             print("Getting from cache")
